@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boletín Visual Editable - Hotel Marina Copán</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f6;
+      color: #333;
+    }
+
+    .pagina {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      padding-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    header {
+      background-color: #a62658;
+      color: white;
+      padding: 25px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    header img {
+      width: 150px;
+      border-radius: 10px;
+    }
+
+    header div h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    header div p {
+      margin: 5px 0 0;
+      font-size: 14px;
+    }
+
+    section {
+      padding: 30px 40px;
+    }
+
+    h2 {
+      color: #a62658;
+      border-left: 6px solid #FFA500;
+      padding-left: 10px;
+      margin-bottom: 15px;
+    }
+
+    .meta-box {
+      background-color: #FFC10733;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .grid-pequena {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .card {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      min-height: 150px;
+      position: relative;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      object-fit: cover;
+      height: 120px;
+    }
+
+    .foto-placeholder {
+      background-color: #ddd;
+      height: 120px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .cumples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .cumple {
+      background-color: #E3F2FD;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .chiste {
+      background-color: #FFF9C4;
+      border-left: 6px solid #FFC107;
+      padding: 15px;
+      border-radius: 10px;
+      font-style: italic;
+      margin-top: 15px;
+    }
+
+    [contenteditable="true"]:hover {
+      outline: 2px dashed #a62658;
+      cursor: text;
+    }
+
+    .exportar-btn {
+      display: block;
+      margin: 30px auto;
+      background-color: #a62658;
+      color: white;
+      border: none;
+      padding: 15px 35px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(166, 38, 88, 0.3);
+      transition: 0.3s;
+    }
+
+    .exportar-btn:hover {
+      background-color: #8c1e4a;
+      transform: scale(1.05);
+    }
+
+    .footer {
+      background-color: #a62658;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- INPUT OCULTO PARA SUBIR IMAGENES -->
+<input type="file" id="imgUpload" accept="image/*" style="display:none">
+
+<!-- UNA SOLA PAGINA -->
+<div class="pagina" id="pagina">
+  <header>
+    <img src="assets/LOGO HOTEL MARINA COPÁN HORIZONTAL BLANCO.png" alt="Logo">
+    <div>
+      <h1 contenteditable="true">BOLETÍN SEMANAL</h1>
+      <p contenteditable="true">Semana del [Día] al [Día] de [Mes] [Año]</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>🎯 Meta General del Hotel</h2>
+    <div class="meta-box" contenteditable="true">
+      [Meta] [Emoji]
+    </div>
+  </section>
+
+  <section>
+    <h2>🗞️ Novedades Visuales</h2>
+    <div class="grid">
+      <div class="card" contenteditable="true">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <h3>📅 Eventos Importantes</h3>
+        <ul>
+          <li>[Nombre del Evento 1] – [Día]</li>
+          <li>[Nombre del Evento 2] – [Día]</li>
+        </ul>
+      </div>
+      <div class="card" contenteditable="true">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <h3>🌟 Grupos Especiales</h3>
+        <ul>
+          <li>[Nombre del Grupo o Persona Especial 1]</li>
+          <li>[Nombre del Grupo o Persona Especial 1]</li>
+        </ul>
+      </div>
+      <div class="card" contenteditable="true">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <h3>📢 Anuncios</h3>
+        <ul>
+          <li>[Anuncio 1]</li>
+          <li>[Anuncio 2]</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🏆 Reconocimientos</h2>
+    <div class="grid">
+      <div class="card" contenteditable="true">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <h3>👑 Empleado de la Semana</h3>
+        <p><strong>[Nombre del Empleado]</strong> – [Texto sobre Empleado]</p>
+      </div>
+    </div>
+
+    <h3>💪 Empleados Destacados</h3>
+    <div class="grid-pequena" contenteditable="true">
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Recepción & Ventas:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Restaurante & Bar:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Cocina:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Welchez Café Copán Ruinas:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Welchez Café Santa Isabel:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Ama de Llaves:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Mantenimiento:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Punto de Acceso:</strong> [Nombre del Empleado]
+      </div>
+      <div class="card">
+        <div class="foto-placeholder" onclick="subirImagen(this)">📸 Foto</div>
+        <strong>Personal Administrativo:</strong> [Nombre del Empleado]
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🎂 Cumpleañeros</h2>
+    <div class="cumples" contenteditable="true">
+      <div class="cumple">[Nombre del Cumpleañero 1] – [Fecha del Cumpleaños 1]</div>
+      <div class="cumple">[Nombre del Cumpleañero 2] – [Fecha del Cumpleaños 2]</div>
+    </div>
+
+    <h2>😂 Chiste de la Semana</h2>
+    <div class="chiste" contenteditable="true">
+      [Texto 1]<br>
+      [Texto 2] 😆
+    </div>
+  </section>
+
+  <section>
+    <h2>📋 Metas Departamentales</h2>
+    <div class="grid-pequena" contenteditable="true">
+      <div class="card"><strong>Recepción & Ventas:</strong> [Meta]</div>
+      <div class="card"><strong>Restaurante & Bar:</strong> [Meta]</div>
+      <div class="card"><strong>Cocina:</strong> [Meta]</div>
+      <div class="card"><strong>Welchez Café Copán Ruinas:</strong> [Meta]</div>
+      <div class="card"><strong>Welchez Café Santa Isabel:</strong> [Meta]</div>
+      <div class="card"><strong>Ama de Llaves:</strong> [Meta]</div>
+      <div class="card"><strong>Mantenimiento:</strong> [Meta]</div>
+      <div class="card"><strong>Punto de Acceso:</strong> [Meta]</div>
+      <div class="card"><strong>Personal Administrativo:</strong> [Meta]</div>
+    </div>
+  </section>
+
+  <div class="footer" contenteditable="true">
+    Manteniéndonos en sintonía 💙 | Hotel Marina Copán
+  </div>
+</div>
+
+<button class="exportar-btn" onclick="exportar('pagina')">📤 Exportar Boletín</button>
+
+<script>
+  function exportar(idPagina) {
+    const pagina = document.getElementById(idPagina);
+    html2canvas(pagina, { scale: 10, backgroundColor: "#ffffff", useCORS: true })
+      .then(canvas => {
+        const link = document.createElement("a");
+        link.download = `Boletin_HotelMarinaCopan.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+  }
+
+  function subirImagen(div) {
+    const input = document.getElementById('imgUpload');
+    input.click();
+    input.onchange = function() {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          div.innerHTML = `<img src="${e.target.result}" alt="Imagen">`;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
